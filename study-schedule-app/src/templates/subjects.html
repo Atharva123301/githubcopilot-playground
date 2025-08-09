@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Manage Subjects</h2>
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Add New Subject</h5>
+                <form method="POST" action="/add_subject">
+                    <div class="mb-3">
+                        <label for="subject_name" class="form-label">Subject Name</label>
+                        <input type="text" class="form-control" id="subject_name" name="subject_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="priority" class="form-label">Priority</label>
+                        <select class="form-select" id="priority" name="priority">
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Subject</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Subject List</h5>
+                <div id="subject-list">
+                    {% if subjects %}
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Subject</th>
+                                    <th>Priority</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for subject in subjects %}
+                                <tr>
+                                    <td>{{ subject.id }}</td>
+                                    <td>{{ subject.name }}</td>
+                                    <td>
+                                        <span class="badge {% if subject.priority == 'high' %}bg-danger
+                                            {% elif subject.priority == 'medium' %}bg-warning
+                                            {% else %}bg-info{% endif %}">
+                                            {{ subject.priority }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="alert alert-info">
+                            No subjects added yet. Add your first subject using the form.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

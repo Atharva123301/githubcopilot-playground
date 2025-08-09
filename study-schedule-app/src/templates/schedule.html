@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Study Schedule</title>
+</head>
+<body>
+    <header>
+        <h1>Your Study Schedule</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Planned Study Sessions</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Duration (minutes)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if schedules %}
+                        {% for schedule in schedules %}
+                            {% set subject = schedule.get_subject() %}
+                            <tr>
+                                <td>{{ subject.name }}</td>
+                                <td>{{ schedule.date }}</td>
+                                <td>{{ schedule.time }}</td>
+                                <td>{{ schedule.duration }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center">No schedules added yet.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Study Schedule App</p>
+    </footer>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+{% block content %}
+<h2>Study Schedule</h2>
+<div class="row mt-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Add New Schedule</h5>
+                {% if subjects %}
+                    <form method="POST" action="/add_schedule">
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject</label>
+                            <select class="form-select" id="subject" name="subject" required>
+                                <option value="">Select Subject</option>
+                                {% for subject in subjects %}
+                                    <option value="{{ subject.id }}">{{ subject.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="date" name="date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="time" class="form-label">Time</label>
+                            <input type="time" class="form-control" id="time" name="time" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="duration" class="form-label">Duration (minutes)</label>
+                            <input type="number" class="form-control" id="duration" name="duration" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Schedule</button>
+                    </form>
+                {% else %}
+                    <div class="alert alert-warning">
+                        Please add subjects first before creating a schedule. 
+                        <a href="{{ url_for('subjects') }}" class="alert-link">Add Subjects</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# System Files
+.DS_Store
+Thumbs.db
